@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer/intex";
-import { orbitron } from "./fonts";
+import { exo2, orbitron } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +31,7 @@ export default function RootLayout({
   ];
 
   return (
-    <html lang="en" className={orbitron.variable}>
+    <html lang="en" className={`${orbitron.variable} ${exo2.variable}`}>
       <body className="bg-orange-50 px-4 py-2 flex flex-col min-h-screen">
         <header>
           <NavBar configLinks={configLinks} />
