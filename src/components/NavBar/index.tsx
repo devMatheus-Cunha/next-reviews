@@ -11,8 +11,14 @@ interface ConfigLinksTypes {
 
 const NavBar: React.FC<ConfigLinksTypes> = ({ configLinks }) => {
   return (
-    <nav>
-      <ul className="flex gap-2">
+    <nav className="flex">
+      <Link
+        className="text-orange-800 hover:underline font-orbitron font-bold"
+        href="/"
+      >
+        Indie Gamer
+      </Link>
+      <ul className="flex gap-2 ml-auto">
         {configLinks.map(({ label, href, prefetch }) => (
           <Link
             className="text-orange-800 hover:underline"
