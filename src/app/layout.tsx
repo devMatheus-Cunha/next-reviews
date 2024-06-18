@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from "next";
+
+import "./globals.css";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer/intex";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,9 +16,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const configLinks = [
+    {
+      label: "Home",
+      href: "/",
+      prefetch: true,
+    },
+    {
+      label: "Reviews",
+      href: "/reviews",
+      prefetch: true,
+    },
+    {
+      label: "About",
+      href: "/about",
+      prefetch: false,
+    },
+  ];
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className="bg-orange-50 px-4 py-2 flex flex-col min-h-screen">
+        <header>
+          <NavBar configLinks={configLinks} />
+        </header>
+        <main className="py-3 grow">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
