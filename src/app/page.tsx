@@ -1,37 +1,38 @@
 import Link from "next/link";
 import Heading from "@/components/Heading";
+import { getFeaturedReview } from "@/lib/reviews";
 import Image from "next/image";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const review = await getFeaturedReview();
   return (
     <>
       <Heading>Indie Gamer</Heading>
       <p className="pb-3">Only the best indie games, reviewed for you.</p>
       <div
-        className="bg-white border rounded shadow w-80 max-w-[752px]
+        className="bg-white border rounded shadow w-80 max-w-[952px]
                       hover:shadow-xl sm:w-full "
       >
         <Link
-          href="/reviews/stardew-valley"
+          href={`/reviews/${review.slug}`}
           className="flex flex-col sm:flex-row"
         >
           <Image
-            src="/images/stardew-valley.jpg"
+            src={review.image}
             alt=""
             width="320"
             height="180"
             className="rounded-t sm:rounded-l sm:rounded-r-none"
           />
-          <div>
+          <div className="flex flex-col">
+            {" "}
             <h2 className="font-orbitron font-semibold py-1 text-center sm:px-2">
-              Stardew Valley
+              {review.title}
             </h2>
-            <p className="p-2">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
-            </p>
+            <article
+              dangerouslySetInnerHTML={{ __html: review.body }}
+              className="max-w-screen-sm prose prose-slate px-2"
+            />
           </div>
         </Link>
       </div>

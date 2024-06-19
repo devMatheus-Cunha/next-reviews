@@ -1,6 +1,6 @@
 const Footer: React.FC = () => {
   return (
-    <footer className="border-t py-3 text-center text-xs">
+    <footer className="border-t text-slate-500 py-3 text-center text-xs">
       Game data and images courtesy of{" "}
       <a
         className="text-orange-800 hover:underline"
