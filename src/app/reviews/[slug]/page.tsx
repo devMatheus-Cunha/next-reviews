@@ -1,7 +1,7 @@
 import Heading from "@/components/Heading";
+import { ShareButtons } from "@/components/ShareButtons";
 import { getReview, getSlugs } from "@/lib/reviews";
 import Image from "next/image";
-import { title } from "process";
 
 interface ReviewPageParams {
   slug: string;
@@ -30,7 +30,10 @@ export default async function ReviewsPage({
   return (
     <>
       <Heading>{title}</Heading>
-      <p className="italic pb-2">{date}</p>
+      <div className="flex gap-3 items-baseline ">
+        <p className="italic pb-2">{date}</p>
+        <ShareButtons />
+      </div>
       <Image
         src={image}
         alt={title}
