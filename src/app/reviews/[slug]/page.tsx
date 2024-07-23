@@ -22,7 +22,6 @@ export async function generateMetadata({ params: { slug } }: ReviewPageProps) {
     title: title,
   };
 }
-
 export default async function ReviewsPage({
   params: { slug },
 }: ReviewPageProps) {
@@ -42,7 +41,7 @@ export default async function ReviewsPage({
         className="mb-2 rounded"
       />
       <article
-        dangerouslySetInnerHTML={{ __html: body }}
+        dangerouslySetInnerHTML={{ __html: body ?? "" }}
         className="max-w-screen-sm prose prose-slate"
       />
     </>

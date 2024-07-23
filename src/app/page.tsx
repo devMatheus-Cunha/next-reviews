@@ -29,10 +29,6 @@ export default async function HomePage() {
             <h2 className="font-orbitron font-semibold py-1 text-center sm:px-2">
               {review.title}
             </h2>
-            <article
-              dangerouslySetInnerHTML={{ __html: review.body }}
-              className="max-w-screen-sm prose prose-slate px-2"
-            />
           </div>
         </Link>
       </div>
