@@ -25,10 +25,11 @@ export async function generateMetadata({ params: { slug } }: ReviewPageProps) {
 export default async function ReviewsPage({
   params: { slug },
 }: ReviewPageProps) {
-  const { title, date, image, body } = await getReview(slug);
+  const { title, date, image, body, subtitle } = await getReview(slug);
   return (
     <>
       <Heading>{title}</Heading>
+      <p className="font-semibold pb-3">{subtitle}</p>
       <div className="flex gap-3 items-baseline ">
         <p className="italic pb-2">{date}</p>
         <ShareButtons />
@@ -36,6 +37,7 @@ export default async function ReviewsPage({
       <Image
         src={image}
         alt={title}
+        priority
         width="640"
         height="360"
         className="mb-2 rounded"

@@ -1,37 +1,36 @@
-import Heading from "@/components/Heading";
-import { getReviews } from "@/lib/reviews";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Heading from "@/components/Heading";
+import { getReviews } from "@/lib/reviews";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Reviews",
 };
 
 export default async function ReviewsPage() {
-  const reviews = await getReviews();
-
+  const reviews = await getReviews(6);
   return (
     <>
       <Heading>Reviews</Heading>
       <ul className="flex flex-row flex-wrap gap-3">
-        {reviews.map(({ title, image, slug }) => (
+        {reviews.map((review, index) => (
           <li
-            key={title}
+            key={review.slug}
             className="bg-white border rounded shadow w-80 hover:shadow-xl"
           >
-            <Link href={`/reviews/${slug}`}>
-              <>
-                <Image
-                  src={image}
-                  alt={title}
-                  width="320"
-                  height="180"
-                  className="mb-2 rounded"
-                />
-                <h2 className="font-orbitron font-semibold text-center">
-                  {title}
-                </h2>
-              </>
+            <Link href={`/reviews/${review.slug}`}>
+              <Image
+                src={review.image}
+                alt=""
+                priority={index === 0}
+                width="320"
+                height="180"
+                className="rounded-t"
+              />
+              <h2 className="font-orbitron font-semibold py-1 text-center">
+                {review.title}
+              </h2>
             </Link>
           </li>
         ))}
