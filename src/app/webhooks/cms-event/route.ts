@@ -1,5 +1,5 @@
 import { revalidateTag } from "next/cache";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { CACHE_TAG_REVIEWS } from "@/lib/reviews";
 
 export async function POST(request: NextRequest) {
@@ -8,5 +8,5 @@ export async function POST(request: NextRequest) {
     revalidateTag(CACHE_TAG_REVIEWS);
     console.log("revalidated:", CACHE_TAG_REVIEWS);
   }
-  return new Response(null, { status: 204 });
+  return NextResponse.json(null, { status: 200 });
 }
