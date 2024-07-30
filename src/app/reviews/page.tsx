@@ -4,12 +4,20 @@ import Link from "next/link";
 import Heading from "@/components/Heading";
 import { getReviews } from "@/lib/reviews";
 
+// export const revalidate = 30; // one option to revalidate cache of the next
+
 export const metadata: Metadata = {
   title: "Reviews",
 };
 
 export default async function ReviewsPage() {
   const reviews = await getReviews(6);
+
+  console.log(
+    "[ReviewsPage] rendering:",
+    reviews.map((review) => review.title).join(", ")
+  );
+
   return (
     <>
       <Heading>Reviews</Heading>

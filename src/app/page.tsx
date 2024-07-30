@@ -5,7 +5,11 @@ import { getReviews } from "@/lib/reviews";
 
 export default async function HomePage() {
   const reviews = await getReviews(3);
-  // console.log('[HomePage] rendering');
+
+  console.log(
+    "[HomePage] rendering:",
+    reviews.map((review) => review.title).join(", ")
+  );
   return (
     <>
       <Heading>Indie Gamer</Heading>
