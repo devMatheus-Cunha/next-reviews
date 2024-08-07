@@ -3,15 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import Heading from "@/components/Heading";
 import { getReviews } from "@/lib/reviews";
+import PaginationBar from "@/components/PaginationBar";
 
 // export const revalidate = 30; // one option to revalidate cache of the next
+
+interface ReviewsPageProps {
+  searchParams: { page?: string };
+}
 
 export const metadata: Metadata = {
   title: "Reviews",
 };
 
-export default async function ReviewsPage() {
-  const reviews = await getReviews(6);
+const PAGE_SIZE = 6;
+
+export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
+  const page = parsePageParam(searchParams.page);
+
+  const { reviews, pageCount } = await getReviews(PAGE_SIZE, page);
 
   console.log(
     "[ReviewsPage] rendering:",
@@ -21,6 +30,7 @@ export default async function ReviewsPage() {
   return (
     <>
       <Heading>Reviews</Heading>
+      <PaginationBar href="/reviews" page={page} pageCount={pageCount} />
       <ul className="flex flex-row flex-wrap gap-3">
         {reviews.map((review, index) => (
           <li
@@ -45,4 +55,14 @@ export default async function ReviewsPage() {
       </ul>
     </>
   );
+}
+
+function parsePageParam(paramValue?: string): number {
+  if (paramValue) {
+    const page = parseInt(paramValue);
+    if (isFinite(page) && page > 1) {
+      return page;
+    }
+  }
+  return 1;
 }

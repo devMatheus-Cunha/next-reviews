@@ -1,37 +1,21 @@
-import Link from "next/link";
-import React from "react";
+import NavLink from "../NavLink";
 
-interface ConfigLinksTypes {
-  configLinks: {
-    label: string;
-    href: string;
-    prefetch: boolean;
-  }[];
-}
-
-const NavBar: React.FC<ConfigLinksTypes> = ({ configLinks }) => {
+export default function NavBar() {
   return (
-    <nav className="flex">
-      <Link
-        className="text-orange-800 hover:underline font-orbitron font-bold"
-        href="/"
-      >
-        Indie Gamer
-      </Link>
-      <ul className="flex gap-2 ml-auto">
-        {configLinks.map(({ label, href, prefetch }) => (
-          <Link
-            className="text-orange-800 hover:underline"
-            key={href}
-            prefetch={prefetch}
-            href={href}
-          >
-            {label}
-          </Link>
-        ))}
+    <nav>
+      <ul className="flex gap-2">
+        <li className="font-bold font-orbitron">
+          <NavLink href="/">Indie Gamer</NavLink>
+        </li>
+        <li className="ml-auto">
+          <NavLink href="/reviews">Reviews</NavLink>
+        </li>
+        <li>
+          <NavLink href="/about" prefetch={false}>
+            About
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
-};
-
-export default NavBar;
+}
