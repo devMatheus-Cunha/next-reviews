@@ -1,3 +1,4 @@
+import "server-only";
 import { marked } from "marked";
 import qs from "qs";
 
@@ -22,9 +23,12 @@ export interface PaginatedReviews {
   pageCount: number;
   reviews: Review[];
 }
+
 export interface FullReview extends Review {
   body: string | Promise<string>;
 }
+
+export type SearchableReview = Pick<Review, "slug" | "title">;
 
 export async function getReview(slug: string): Promise<FullReview | null> {
   const { data } = await fetchReviews({
@@ -68,11 +72,25 @@ export async function getSlugs(): Promise<string[]> {
   return data.map((item: CmsItem) => item.attributes.slug);
 }
 
+export async function searchReviews(
+  query: string | null
+): Promise<SearchableReview[]> {
+  const { data } = await fetchReviews({
+    filters: { title: { $containsi: query } },
+    fields: ["slug", "title"],
+    sort: ["title"],
+    pagination: { pageSize: 5 },
+  });
+  return data.map(({ attributes }: CmsItem) => ({
+    slug: attributes.slug,
+    title: attributes.title,
+  }));
+}
+
 async function fetchReviews(parameters: any) {
   const url =
     `${CMS_URL}/api/reviews?` +
     qs.stringify(parameters, { encodeValuesOnly: true });
-  // console.log('[fetchReviews]:', url);
   const response = await fetch(url, {
     next: {
       tags: [CACHE_TAG_REVIEWS],
