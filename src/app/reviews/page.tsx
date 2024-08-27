@@ -24,11 +24,6 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
 
   const { reviews, pageCount } = await getReviews(PAGE_SIZE, page);
 
-  console.log(
-    "[ReviewsPage] rendering:",
-    reviews.map((review) => review.title).join(", ")
-  );
-
   return (
     <>
       <Heading>Reviews</Heading>
