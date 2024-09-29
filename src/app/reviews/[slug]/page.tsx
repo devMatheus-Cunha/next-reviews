@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
+import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import Heading from "@/components/Heading";
-import { getReview, getSlugs } from "@/lib/reviews";
-import { ShareLinkButton } from "@/components/ShareLinkButton";
-import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/16/solid";
+import { Suspense } from "react";
 import CommentForm from "@/components/CommentForm";
 import CommentList from "@/components/CommentList";
+import CommentListSkeleton from "@/components/CommentListSkeleton";
+import Heading from "@/components/Heading";
+import ShareLinkButton from "@/components/ShareLinkButton";
+import { getUserFromSession } from "@/lib/auth";
+import { getReview } from "@/lib/reviews";
 
 interface ReviewPageParams {
   slug: string;
@@ -16,10 +20,11 @@ interface ReviewPageProps {
   params: ReviewPageParams;
 }
 
-export async function generateStaticParams(): Promise<ReviewPageParams[]> {
-  const slugs = await getSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+// export async function generateStaticParams(): Promise<ReviewPageParams[]> {
+//   const slugs = await getSlugs();
+//   // console.log('[ReviewPage] generateStaticParams:', slugs);
+//   return slugs.map((slug) => ({ slug }));
+// }
 
 export async function generateMetadata({
   params: { slug },
@@ -41,6 +46,7 @@ export default async function ReviewPage({
   if (!review) {
     notFound();
   }
+  const user = await getUserFromSession();
   return (
     <>
       <Heading>{review.title}</Heading>
@@ -66,8 +72,19 @@ export default async function ReviewPage({
           <ChatBubbleBottomCenterTextIcon className="h-6 w-6" />
           Comments
         </h2>
-        <CommentForm title={review.title} />
-        <CommentList slug={slug} />
+        {user ? (
+          <CommentForm slug={slug} title={review.title} userName={user.name} />
+        ) : (
+          <div className="border bg-white mt-3 px-3 py-3 rounded">
+            <Link href="/sign-in" className="text-orange-800 hover:underline">
+              Sign in
+            </Link>{" "}
+            to have your say!
+          </div>
+        )}
+        <Suspense fallback={<CommentListSkeleton />}>
+          <CommentList slug={slug} />
+        </Suspense>
       </section>
     </>
   );
